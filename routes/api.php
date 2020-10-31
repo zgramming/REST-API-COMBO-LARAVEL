@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\ProdukController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,31 +21,45 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//* CRUD
-Route::get('user/all', [UserController::class, 'getAll']);
+//* PHP ARTISAN make controller programmatically
+Route::get('artisan/make_controller/{controller}', function ($controller) {
+    Artisan::call('make:controller Api/' . $controller . '');
+});
 
+//* PHP ARTISAN make model programmatically
+Route::get('artisan/make_model/{model}', function ($model) {
+    Artisan::call('make:model Api/' . $model . '');
+});
+
+//* PHP ARTISAN make model programmatically
+Route::get('artisan/storage_link', function () {
+    $result = Artisan::call('storage:link');
+    return $result;
+});
+
+
+//* User
+Route::get('user/all', [UserController::class, 'getAll']);
 Route::get('user/single/{id}', [UserController::class, 'getSingle']);
 
-Route::get('user/where1/{id}', [UserController::class, 'getWhere1']);
+Route::put('user/updateImage/{id}', [UserController::class, 'updateImage']);
 
-Route::post('user/insertWithoutFile', [UserController::class, 'insertWithoutFile']);
-
-Route::post('user/insertWithFile', [UserController::class, 'insertWithFile']);
-
-
-Route::put('user/updateWithoutFile/{id}', [UserController::class, 'updateWithoutFile']);
-
-Route::put('user/updateWithFile/{id}', [UserController::class, 'updateWithFile']);
-
-
-Route::delete('user/deleteWithoutFile/{id}', [UserController::class, 'deleteWithoutFile']);
-
-Route::delete('user/deleteWithFile/{id}', [UserController::class, 'deleteWithFile']);
-
-//* Login
+Route::delete('user/delete/{id}', [UserController::class, "delete"]);
+Route::delete('user/deleteImage/{id}', [UserController::class, "deleteImage"]);
 
 Route::post('user/login', [UserController::class, 'login']);
-
-//* Register
-
 Route::post('user/register', [UserController::class, 'register']);
+
+
+//* Produk
+
+Route::get('produk/all', [ProdukController::class, "getAllProduk"]);
+Route::get('produk/single/{id}', [ProdukController::class, "getSingleProduk"]);
+
+Route::post('produk/insert', [ProdukController::class, "insert"]);
+
+Route::put('produk/update/{id}', [ProdukController::class, 'update']);
+Route::put('produk/updateImage/{id}', [ProdukController::class, 'updateImage']);
+
+Route::delete('produk/delete/{id}', [ProdukController::class, "delete"]);
+Route::delete('produk/deleteImage/{id}', [ProdukController::class, "deleteImage"]);
