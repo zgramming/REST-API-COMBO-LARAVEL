@@ -3,28 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Mail\SendMail;
 use App\Models\Api\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Exception;
 
 
 class UserController extends Controller
 {
-    //? Directory untuk upload foto
-    protected $uploadDirectory = "public/images/";
 
-    //? directory untuk menghapus foto
-    protected $completeUploadDirectory = "app/public/images/";
+    protected $reusableController;
+
+    public function __construct(ReusableController $reusableController)
+    {
+        $this->reusableController = $reusableController;
+    }
 
     public function getAll()
     {
-        $this->uploadDirectory;
         $users = UserModel::all();
 
         return response()->json([
+            "status" => "ok",
             "message" => "Berhasil mendapatkan user",
             "data" => $users
         ], 200);
@@ -39,6 +40,7 @@ class UserController extends Controller
 
         if (!empty($user)) {
             return response()->json([
+                "status" => "ok",
                 'message' => 'User ditemukan',
                 'data' => $user
             ]);
@@ -50,331 +52,203 @@ class UserController extends Controller
         }
     }
 
-    public function getWhere1($id)
+    public function updateImage(Request $request, $id)
     {
-        $user = UserModel::where('id_user', '!=', $id)->get();
-        if ($user->isEmpty()) {
-            return response()->json([
-                "message" => "User tidak ditemukan",
-                "data" => null
-            ], 404);
-        } else {
-            return response()->json([
-                "message" => "Berhasil menemukan user",
-                "data" => $user
-            ], 200);
-        }
-    }
-
-    public function insertWithoutFile(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name_user' => 'required',
-            'password_user' => 'required|min:5|max:8',
-            'email_user' => 'required|email|unique:tbl_user,email_user',
-        ]);
-
-        if ($validator->fails()) {
-
-            return response()->json([
-                'message' => $validator->errors()
-            ], 401);
-        }
-
-
-        $user = new UserModel();
-
-        $user->name_user = $request->name_user;
-        $user->password_user = Hash::make($request->password_user);
-        $user->email_user = $request->email_user;
-        $result = $user->save();
-
-        if ($result) {
-
-            return response()->json([
-                "message" => "Berhasil menambah user",
-            ], 200);
-        } else {
-
-            return response()->json([
-                "message" => "Gagal menambah user",
-                "data" => null
-            ], 500);
-        }
-    }
-
-
-    public function insertWithFile(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name_user' => 'required',
-            'password_user' => 'required|min:5|max:8',
-            'email_user' => 'required|email|unique:tbl_user,email_user',
-            'image_user' => 'required|mimes:jpeg,png,jpg|max:200'
-        ]);
-
-        if ($validator->fails()) {
-
-            return response()->json([
-                'message' => $validator->errors()
-            ], 401);
-        }
-
-
-        if ($request->file('image_user')->isValid()) {
-
-            $fileImage = $request->file('image_user');
-
-
-            $user = new UserModel();
-
-            $user->name_user = $request->name_user;
-            $user->password_user = Hash::make($request->password_user);
-            $user->email_user = $request->email_user;
-            $user->image_user  = $fileImage->hashName();
-            $result = $user->save();
-
-            if ($result) {
-
-                //? Lokasi folder berada di [storage/app/?]
-                //? Jika ingin otomatis generate nama filenya
-                $fileImage->store($this->uploadDirectory);
-
-                //? Jika ingin custom nama filenya
-                // $fileImage->storeAs($this->uploadDirectory, $nameImage);
-
-                return response()->json([
-                    "message" => "Berhasil Tambah user dengan foto",
-                ], 200);
-            } else {
-                return response()->json([
-                    "message" => "Gagal tambah user dengan foto",
-                    "data" => null
-                ], 400);
-            }
-        }
-    }
-
-    public function updateWithFile(Request $request, $id)
-    {
-        if (UserModel::where('id_user', $id)->exists()) {
-            $user = UserModel::find($id);
-
+        try {
             $validator = Validator::make($request->all(), [
-                "name_user" => "required",
-                "password_user" => "required|min:5|max:8",
-                "email_user" => "required|email",
-                "image_user" => "required|mimes:jpeg,jpg,png|max:200"
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    "message" => $validator->errors()
-                ], 401);
-            }
-
-            if ($request->file('image_user')->isValid()) {
-                $fileImage = $request->file('image_user');
-
-                $fileIsExist = is_file(storage_path($this->completeUploadDirectory . $user->image_user));
-
-                if ($fileIsExist) {
-                    unlink(storage_path($this->completeUploadDirectory . $user->image_user));
-                }
-
-                $user->name_user            = $request->name_user;
-                $user->password_user        = Hash::make($request->password_user);
-                $user->email_user           = $request->email_user;
-                $user->image_user           = $fileImage->hashName();
-                $result = $user->save();
-
-                if ($result) {
-
-                    $fileImage->store($this->uploadDirectory);
-
-                    return response()->json([
-                        "message" => "Berhasil update user dengan foto baru",
-                        "data" => $user,
-                    ], 200);
-                } else {
-                    return response()->json([
-                        "message" => "Gagal update user denga foto baru"
-                    ], 400);
-                }
-            }
-        } else {
-            return response()->json([
-                "message" => "User tidak ditemukan",
-                "data" => null
-            ], 404);
-        }
-    }
-
-    public function updateWithoutFile(Request $request, $id)
-    {
-        if (UserModel::where('id_user', $id)->exists()) {
-
-            $validator = Validator::make($request->all(), [
-                "name_user" => "required",
-                "password_user" => "required|min:5|max:8",
-                "email_user" => "required|email"
+                "image_user" => "required"
             ]);
 
             if ($validator->fails()) {
 
-                return response()->json([
-                    'message' => $validator->errors()
-                ], 401);
+                throw new Exception($validator->errors()->first(), 400);
             }
 
             $user = UserModel::find($id);
 
-            $user->name_user = $request->name_user;
-            $user->password_user = Hash::make($request->password_user);
-            $user->email_user = $request->email_user;
+            if ($user == null) {
+
+                throw new Exception('User tidak ditemukan', 404);
+            }
+
+            $fileName = strtotime(date('Y-m-d H:i:s')) . uniqid() . ".png";
+
+            if ($user->image_user != null || !empty($user->image_user)) {
+                $this->deleteImage($user->id_user);
+            }
+
+            $createFile = $this->reusableController->base64ToFile(
+                $request->image_user,
+                $fileName,
+                $this->reusableController->uploadUserDirectory
+            );
+
+            if (!$createFile) {
+
+                throw new Exception('Gagal update gambar ' . $user->name_user . '', 400);
+            }
+
+            $user->image_user = $fileName;
             $result = $user->save();
 
-            if ($result) {
-                return response()->json([
-                    "message" => "Berhasil update user",
-                    "data" => $user
-                ], 200);
-            } else {
-                return response()->json(["message" => "Gagal update user", "data" => null], 400);
+            if (!$result) {
+
+                throw new Exception('Terjadi masalah saat update gambar ', 400);
             }
-        } else {
-            // echo "test";
-            return response()->json([
-                "message" => "User tidak ditemukan",
-            ], 404);
+
+            return response()->json(["status" => "ok", "message" => "Berhasil update gambar " . $user->name_user . " ", "data" => $user], 200);
+        } catch (Exception $e) {
+
+            return response()->json(["status" => "error", "message" => $e->getMessage()], $e->getCode());
         }
     }
 
-    public function deleteWithoutFile(Request $request, $id)
+    public function delete($id)
     {
-        $user = UserModel::find($id);
+        try {
+            $user = UserModel::find($id);
 
-        if ($user == null) {
-            return response()->json([
-                "message" => "User tidak ditemukan"
-            ], 404);
-        } else {
-            $result = $user->delete();
-            if ($result) {
+            if ($user == null) {
 
-                return response()->json([
-                    "message" => "Berhasil hapus user",
-                    "data" => $result
-                ], 200);
-            } else {
-                return response()->json(["message" => "Gagal hapus user", "data" => null], 400);
+                throw new Exception('User tidak ditemukan', 404);
             }
-        }
-    }
 
-    public function deleteWithFile(Request $request, $id)
-    {
-        $user = UserModel::find($id);
+            $fileIsExist = is_file(storage_path($this->reusableController->completeUploadUserDirectory . $user->image_user));
 
-        if ($user == null) {
-            return response()->json([
-                "message" => "User tidak ditemukan"
-            ], 404);
-        } else {
-            $fileIsExist = is_file(storage_path($this->completeUploadDirectory . $user->image_user));
+            if (!$fileIsExist) {
 
-            if ($fileIsExist) {
-                unlink(storage_path($this->completeUploadDirectory . $user->image_user));
+                throw new Exception('Gambar user tidak ditemukan', 400);
+            }
+
+            $storagePath = storage_path($this->reusableController->completeUploadUserDirectory . $user->image_user);
+            $deleteImage = @unlink($storagePath);
+
+            if (!$deleteImage) {
+
+                throw new Exception('Gambar tidak dapat dihapus , coba beberapa saat lagi', 404);
             }
 
             $result = $user->delete();
 
-            if ($result) {
-                return response()->json([
-                    "message" => "delete user dengan filenya berhasil"
-                ], 200);
-            } else {
-                return response()->json([
-                    "message" => "Delete user dengan filenya gagal"
-                ], 400);
+            if (!$result) {
+
+                throw new Exception('User tidak dapat dihapus', 400);
             }
+
+            return response()->json(["status" => "ok", "message" => "User berhasil dihapus"], 200);
+        } catch (Exception $e) {
+
+            return response()->json(["status" => "error", "message" => $e->getMessage()], $e->getCode());
+        }
+    }
+
+    public function deleteImage($id)
+    {
+
+        try {
+            $user = UserModel::find($id);
+
+            if ($user == null) {
+
+                throw new Exception('User tidak dapat ditemukan', 404);
+            }
+
+            $fileIsExist = is_file(storage_path($this->reusableController->completeUploadUserDirectory . $user->image_user));
+
+            if (!$fileIsExist) {
+
+                throw new Exception('Gambar User tidak ditemukan', 404);
+            }
+
+            $deleteImage = @unlink(storage_path($this->reusableController->completeUploadUserDirectory . $user->image_user));
+
+            if (!$deleteImage) {
+
+                throw new Exception('Gambar user tidak dapat dihapus , coba beberapa saat lagi', 400);
+            }
+
+            $user->image_user = null;
+
+            $result = $user->save();
+
+            if (!$result) {
+
+                throw new Exception('Gagal mengubah gambar user menjadi null', 400);
+            }
+
+            return response()->json(["status" => "ok", "message" => "Berhasil menghapus gambar user"], 200);
+        } catch (Exception $e) {
+
+            return response()->json(["status" => "error", "message" => $e->getMessage()], $e->getCode());
         }
     }
 
     public function login(Request $request)
     {
-        $user = UserModel::where('email_user', $request->email_user)->first();
-        if ($user == null) {
-            return response()->json([
-                "message" => "User tidak ditemukan", "data" => null
-            ], 404);
+        try {
+            $validator = Validator::make($request->all(), [
+                "email_user" => "required|email",
+                "password_user" => "required|min:5|max:8",
+            ]);
+
+            if ($validator->fails()) {
+
+                throw new Exception($validator->errors()->first(), 400);
+            }
+
+            $user = UserModel::where('email_user', $request->email_user)->first();
+            if ($user == null) {
+
+                throw new Exception("User dengan email " . $request->email_user . " tidak ditemukan ", 404);
+            }
+
+
+            if (!Hash::check($request->password_user, $user->password_user)) {
+
+                throw new Exception("Password tidak valid", 400);
+            }
+
+            return response()->json(["status" => "ok", "message" => "Berhasil login", "data" => $user], 200);
+        } catch (Exception $e) {
+
+            return response()->json(["status" => "error", "message" => $e->getMessage()], $e->getCode());
         }
-
-
-        if (!Hash::check($request->password_user, $user->password_user)) {
-            return response()->json([
-                "message" => "password tidak valid",
-                "data" => null
-            ], 400);
-        }
-
-
-        return response()->json([
-            "message" => "Berhasil login",
-            "data" => $user
-        ], 200);
     }
 
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            "name_user" => "required",
-            "email_user" => "required|email|unique:tbl_user,email_user",
-            "password_user" => "required|min:5|max:8",
-            "password_confirmation" => "required|same:password_user"
-        ]);
+        try {
+            $validator = Validator::make($request->all(), [
+                "name_user" => "required",
+                "email_user" => "required|email|unique:tbl_user,email_user",
+                "password_user" => "required|min:5|max:8",
+                "password_confirmation" => "required|same:password_user"
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                "message" => $validator->errors()->first(),
-                "data" => null
-            ], 401);
-        }
+            if ($validator->fails()) {
 
-        $user = new UserModel();
+                throw new Exception($validator->errors()->first(), 400);
+            }
 
-        $user->name_user = $request->name_user;
-        $user->email_user  = $request->email_user;
-        $user->password_user = Hash::make($request->password_user);
+            $user = new UserModel();
 
-        $result = $user->save();
+            $user->name_user = $request->name_user;
+            $user->email_user  = $request->email_user;
+            $user->password_user = Hash::make($request->password_user);
 
-        if ($result) {
-            $this->sendEmail($request->name_user, $request->email_user);
+            $result = $user->save();
 
-            return response()->json([
-                "message" => "Berhasil register",
-                "data" => "ok"
-            ], 200);
-        } else {
-            return response()->json([
-                "message" => "Gagal registrasi , coba beberapa saat lagi...",
-                "data" => null
-            ], 400);
-        }
-    }
+            if (!$result) {
 
-    private function sendEmail($nameUser, $emailUser)
-    {
-        $title = 'Terimakasih sudah mendaftar di aplikasi ini ' . $nameUser . ' :*';
-        $userDetail = ['name' => $nameUser,  'email' => $emailUser];
+                throw new Exception("Gagal registrasi , coba beberapa saat lagi...", 400);
+            }
 
-        $sendmail = Mail::to($userDetail['email'])->send(new SendMail($title, $userDetail));
+            $this->reusableController->sendEmail($request->name_user, $request->email_user);
 
-        if (empty($sendmail)) {
-            return response()->json(['message' => 'Mail Sent Sucssfully'], 200);
-        } else {
-            return response()->json(['message' => 'Mail Sent fail'], 400);
+            return response()->json(["status" => "ok", "message" => "Berhasil registrasi , terimakasih atas waktunya untuk mencoba aplikasi ini :D",], 200);
+        } catch (Exception $e) {
+
+            return response()->json(["status" => "error", "message" => $e->getMessage()], $e->getCode());
         }
     }
 }
