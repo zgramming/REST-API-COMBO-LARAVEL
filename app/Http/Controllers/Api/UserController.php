@@ -207,7 +207,6 @@ class UserController extends Controller
 
                 throw new Exception("Password tidak valid", 400);
             }
-
             return response()->json(["status" => "ok", "message" => "Berhasil login", "data" => $user], 200);
         } catch (Exception $e) {
 

@@ -36,5 +36,7 @@ class UserModel extends Model
     //     'delayed' => false,
     // ];
 
-
+    protected $casts = array(
+        "status_user" => "integer"
+    );
 }
