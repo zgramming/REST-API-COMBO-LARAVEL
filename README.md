@@ -185,6 +185,197 @@
 </p>
 </details>
 
+___________________________________________________________________________________________________________________________________
+
+## Product API
+
+### Method GET
+
+* Get all products
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/all</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Mendapatkan semua produk",
+    "data": [
+        {
+            "id_product": 1,
+            "name": "Lenovo Thinkpad T450S",
+            "price": 6300000,
+            "stock": 5,
+            "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+            "image_product": "16042416925f9ec91c19639.png",
+            "created_at": "2020-11-01T14:41:32.000000Z",
+            "updated_at": "2020-11-01T14:41:32.000000Z"
+        },
+        {
+            "id_product": 2,
+            "name": "Acer Swift 7",
+            "price": 10000000,
+            "stock": 2,
+            "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+            "image_product": "16042417165f9ec9347cb1c.png",
+            "created_at": "2020-11-01T14:41:56.000000Z",
+            "updated_at": "2020-11-01T14:41:56.000000Z"
+        },
+        {
+            "id_product": 3,
+            "name": "test",
+            "price": 10000000,
+            "stock": 2,
+            "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+            "image_product": "16042417265f9ec93e69dbe.png",
+            "created_at": "2020-11-01T14:42:06.000000Z",
+            "updated_at": "2020-11-01T14:42:06.000000Z"
+        }
+    ]
+}
+```
+</p>
+</details>
+
+* Get single product
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/single/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Produk ditemukan",
+    "data": {
+        "id_product": 2,
+        "name": "Acer Swift 7",
+        "price": 10000000,
+        "stock": 2,
+        "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+        "image_product": "16042417165f9ec9347cb1c.png",
+        "created_at": "2020-11-01T14:41:56.000000Z",
+        "updated_at": "2020-11-01T14:41:56.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+
+### Method POST
+
+* Insert product
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/insert</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil menambahkan produk Samsung S20 + Ultra",
+    "data": {
+        "id_product": 5,
+        "name": "Samsung S20 + Ultra",
+        "price": 10000000,
+        "stock": 2,
+        "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+        "image_product": "16042417865f9ec97a63539.png",
+        "created_at": "2020-11-01T14:43:06.000000Z",
+        "updated_at": "2020-11-01T14:43:06.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+### Method UPDATE
+
+* Update product
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/update/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Produk  Samsung S10 Basic berhasil diupdate ",
+    "data": {
+        "id_product": 5,
+        "name": "Samsung S10 Basic",
+        "price": 7000000,
+        "stock": 1,
+        "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+        "image_product": "16042417865f9ec97a63539.png",
+        "created_at": "2020-11-01T14:43:06.000000Z",
+        "updated_at": "2020-11-01T14:44:25.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+* Update product image
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/updateImage/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil update gambar Samsung S10 Basic ",
+    "data": {
+        "id_product": 5,
+        "name": "Samsung S10 Basic",
+        "price": 7000000,
+        "stock": 1,
+        "summary": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+        "description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+        "image_product": "16042418775f9ec9d5916d7.png",
+        "created_at": "2020-11-01T14:43:06.000000Z",
+        "updated_at": "2020-11-01T14:44:37.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+### Method DELETE
+
+* Delete product
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/delete/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Produk berhasil dihapus"
+}
+```
+</p>
+</details>
+
+* Delete product image
+
+<details><summary><code>http://127.0.0.1:8000/api/produk/deleteImage/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil menghapus gambar produk"
+}
+```
+</p>
+</details>
+___________________________________________________________________________________________________________________________________
+
 ## Configuration 
 
 After you download/fork this project, make sure in your machine already installed <a href="https://getcomposer.org/">Composer</a>. Then inside project directory running this in console/terminal `composer install`.
