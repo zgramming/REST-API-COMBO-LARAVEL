@@ -3,7 +3,11 @@
 # REST API Flutter Combo Laravel
 
 ## Configuration 
-Before use this REST API, you have to configure a few things : 
+
+After you download/fork this project, make sure in your machine already installed <a href="https://getcomposer.org/">Composer</a>. Then inside project directory running this in console/terminal `composer install`.
+
+Before use this REST API, you have to configure a few things :
+  
   
   ### 1. Database
   
