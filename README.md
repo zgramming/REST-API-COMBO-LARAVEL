@@ -24,7 +24,7 @@ DB_PASSWORD=YOUR_PASSWORD
 
 b. In this project already have migration data **user** and **product**, make sure you already make database with same name as your above configuration in your server. Then you can write in console/terminal :
 
-`php artisan migrate` 
+`php artisan migrate:refresh` 
 
   
   ### 2. Email
