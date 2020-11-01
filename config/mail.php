@@ -39,8 +39,8 @@ return [
             'host' => env('MAIL_HOST', 'smtp.gmail.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME', 'zefry.reynando@gmail.com'),
-            'password' => env('MAIL_PASSWORD', 'kydussnathwmqush'),
+            'username' => env('MAIL_USERNAME', 'YOUR_GMAIL@GMAIL.COM'),
+            'password' => env('MAIL_PASSWORD', 'YOUR_GENERATE_PASSWORD_GMAIL'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -91,8 +91,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'zefry.reynando@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'zefry.reynando@gmail.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'YOUR_GMAIL'),
+        'name' => env('MAIL_FROM_NAME', 'YOUR_NAME'),
     ],
 
     /*
