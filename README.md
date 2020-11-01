@@ -1,61 +1,80 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# REST API Flutter Combo Laravel
 
-## About Laravel
+## Configuration 
+Before use this REST API, you have to configure a few things : 
+  
+  ### 1. Database
+  
+a. Go to .env file and change this line with your :
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=YOUR_DATABASE
+DB_USERNAME=YOUR_USERNAME
+DB_PASSWORD=YOUR_PASSWORD
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+b. In this project already have migration data **user** and **product**, make sure you already make database with same name as your above configuration in your server. Then you can write in console/terminal :
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`php artisan migrate` 
 
-## Learning Laravel
+  
+  ### 2. Email
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+a. Get generate password for **MAIL_PASSWORD**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Go to <a href="https://www.gmail.com/">Gmail</a> and login
+* Click your profile avatar , then click **Manage your Google Account**
+* After that click menu **Security** on left side , make sure 2-step verification is on. In same menu click **App password**
+* Then you will see 2 dropdown **Select app & Select device**, my configurate is **Select app = Mail** and **Select device = Windows Computer**
+* After you click button , pop up will show with your generate password. This password which you will use for email configuration in laravel **.env**
 
-## Laravel Sponsors
+b. Go to .env file and change this line with your :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=YOUR_GMAIL@GMAIL.COM
+MAIL_PASSWORD=YOUR_GENERATE_PASSWORD_GMAIL_ABOVE
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=YOUR_FROM_ADDRESS@GMAIL.COM
+MAIL_FROM_NAME="${APP_NAME}"
+```
+c. Go to **config/mail.php** and change these line : 
 
-### Premium Partners
+```
+'smtp' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_USERNAME', 'YOUR_GMAIL@GMAIL.COM'),
+            'password' => env('MAIL_PASSWORD', 'YOUR_GENERATE_PASSWORD_GMAIL'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+```
 
-## Contributing
+```
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS', 'YOUR_GMAIL'),
+        'name' => env('MAIL_FROM_NAME', 'YOUR_NAME'),
+    ],
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+d. If you want change design of sent email, go to **resource/customer_mail.blade.php**.This file has a function to design email
 
-## Code of Conduct
+e. If you want change logic of sent email, go to `app/Http/Controllers/Api/ReusableController.php` at function **sendEmail**. You can change title of email,user detail include [name & email].
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+  ### 3. Storage
 
-## Security Vulnerabilities
+a. For handling storage folder to accessible in REST API ,running this command on console/terminal 
+`php artisan storage:link `
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+with this you can access storage folder in url like `http://www.example.com/storage/images/namafile.jpg`
