@@ -24,6 +24,7 @@ class Product extends Migration
             $table->text('summary')->nullable();
             $table->text('description')->nullable();
             $table->text('image_product')->nullable();
+            $table->timestamps();
         });
     }
 
