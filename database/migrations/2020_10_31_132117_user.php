@@ -22,6 +22,7 @@ class User extends Migration
             $table->char('email_user', 50);
             $table->text('image_user')->nullable();
             $table->integer('status_user')->default(0);
+            $table->timestamps();
         });
     }
 
