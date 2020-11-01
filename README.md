@@ -2,6 +2,189 @@
 
 # REST API Flutter Combo Laravel
 
+## What's in here ?
+
+## User API
+
+### Method GET
+
+* Get all user
+
+<details><summary><code>http://127.0.0.1:8000/api/user/all</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil mendapatkan user",
+    "data": [
+        {
+            "id_user": 1,
+            "name_user": "zeffry",
+            "password_user": "$2y$10$wdaZVlt8f3DFrGn857mqwuKs7blkTDM/BH3492WhrlgduYrbxdpnG",
+            "email_user": "zeffry.reynando@gmail.com",
+            "image_user": "16042402935f9ec3a5e6e91.png",
+            "status_user": 0,
+            "created_at": "2020-11-01T14:15:13.000000Z",
+            "updated_at": "2020-11-01T14:18:13.000000Z"
+        },
+        {
+            "id_user": 2,
+            "name_user": "Syarif",
+            "password_user": "$2y$10$AXw1wHETAbEjKQEuoW4cwuw2sfRB10c.WJyspic31hQja/uhP5qt2",
+            "email_user": "syarifhidayatullah.net@gmail.com",
+            "image_user": null,
+            "status_user": 0,
+            "created_at": "2020-11-01T14:21:16.000000Z",
+            "updated_at": "2020-11-01T14:21:16.000000Z"
+        },
+        {
+            "id_user": 3,
+            "name_user": "Helmi Yahya",
+            "password_user": "$2y$10$/AEGu4JZrWOsZNa7mdSWLOKmNCHfTTSp2jezDZwDhHe/y9mDjV8r6",
+            "email_user": "helmiyahya@gmail.com",
+            "image_user": null,
+            "status_user": 0,
+            "created_at": "2020-11-01T14:21:31.000000Z",
+            "updated_at": "2020-11-01T14:21:31.000000Z"
+        },
+        {
+            "id_user": 4,
+            "name_user": "Ricky Achmad Alvieri",
+            "password_user": "$2y$10$6ytUQoHc3QVtndBTkaaIveGOWv3JJnGzf3ajer1Z9sjA7SasX6lYO",
+            "email_user": "engkoh@gmail.com",
+            "image_user": null,
+            "status_user": 0,
+            "created_at": "2020-11-01T14:21:52.000000Z",
+            "updated_at": "2020-11-01T14:21:52.000000Z"
+        }
+    ]
+}
+```
+</p>
+</details>
+
+* Get single user
+
+<details><summary><code>http://127.0.0.1:8000/api/user/single/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "User ditemukan",
+    "data": {
+        "id_user": 1,
+        "name_user": "zeffry",
+        "password_user": "$2y$10$wdaZVlt8f3DFrGn857mqwuKs7blkTDM/BH3492WhrlgduYrbxdpnG",
+        "email_user": "zeffry.reynando@gmail.com",
+        "image_user": "16042402935f9ec3a5e6e91.png",
+        "status_user": 0,
+        "created_at": "2020-11-01T14:15:13.000000Z",
+        "updated_at": "2020-11-01T14:18:13.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+### Method POST
+
+* Login
+
+<details><summary><code>http://127.0.0.1:8000/api/user/login</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil login",
+    "data": {
+        "id_user": 4,
+        "name_user": "Ricky Achmad Alvieri",
+        "password_user": "$2y$10$6ytUQoHc3QVtndBTkaaIveGOWv3JJnGzf3ajer1Z9sjA7SasX6lYO",
+        "email_user": "engkoh@gmail.com",
+        "image_user": null,
+        "status_user": 0,
+        "created_at": "2020-11-01T14:21:52.000000Z",
+        "updated_at": "2020-11-01T14:21:52.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+* Register
+
+<details><summary><code>http://127.0.0.1:8000/api/user/register</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil registrasi , terimakasih atas waktunya untuk mencoba aplikasi ini :D"
+}
+```
+</p>
+</details>
+
+
+### Method PUT
+
+* Update Image
+
+<details><summary><code>http://127.0.0.1:8000/api/user/updateImage/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil update gambar zeffry ",
+    "data": {
+        "id_user": 1,
+        "name_user": "zeffry",
+        "password_user": "$2y$10$wdaZVlt8f3DFrGn857mqwuKs7blkTDM/BH3492WhrlgduYrbxdpnG",
+        "email_user": "zeffry.reynando@gmail.com",
+        "image_user": "16042411435f9ec6f74bbed.png",
+        "status_user": 0,
+        "created_at": "2020-11-01T14:15:13.000000Z",
+        "updated_at": "2020-11-01T14:32:23.000000Z"
+    }
+}
+```
+</p>
+</details>
+
+### Method DELETE
+
+* Delete user
+
+<details><summary><code>http://127.0.0.1:8000/api/user/delete/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "User berhasil dihapus"
+}
+```
+</p>
+</details>
+
+* Delete Image
+
+<details><summary><code>http://127.0.0.1:8000/api/user/deleteImage/{id}</code> </summary>
+<p>
+
+```python
+{
+    "status": "ok",
+    "message": "Berhasil menghapus gambar user"
+}
+```
+</p>
+</details>
+
 ## Configuration 
 
 After you download/fork this project, make sure in your machine already installed <a href="https://getcomposer.org/">Composer</a>. Then inside project directory running this in console/terminal `composer install`.
